@@ -1,6 +1,6 @@
 # 熱血高校 돗지볼부 & 축구편 웹 리마스터 (Nekketsu Dodgeball & Soccer Remaster)
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://jeiel85.github.io/pigu/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Play_Now-brightgreen?style=for-the-badge&logo=github)](https://jeiel85.github.io/nekketsu-dodgeball-remaster/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
 [![HTML5 Canvas](https://img.shields.io/badge/HTML5-Canvas_2D-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/)
@@ -11,7 +11,7 @@
 
 ---
 
-## 🎮 [지금 바로 브라우저에서 플레이하기 (Live Demo)](https://jeiel85.github.io/pigu/)
+## 🎮 [지금 바로 브라우저에서 플레이하기 (Live Demo)](https://jeiel85.github.io/nekketsu-dodgeball-remaster/)
 
 ---
 
@@ -92,8 +92,8 @@
 
 ```bash
 # 1. 저장소 클론
-git clone https://github.com/jeiel85/pigu.git
-cd pigu
+git clone https://github.com/jeiel85/nekketsu-dodgeball-remaster.git
+cd nekketsu-dodgeball-remaster
 
 # 2. 의존성 설치
 npm install
