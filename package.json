@@ -1,0 +1,28 @@
+{
+  "name": "nekketsu-dodgeball-remaster",
+  "version": "1.0.0",
+  "description": "열혈고교 돗지볼부 & 축구편 웹 리마스터 (Nekketsu High School Dodgeball & Soccer Remaster)",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "nekketsu",
+    "kunio-kun",
+    "super-dodge-ball",
+    "dodgeball",
+    "soccer",
+    "retro-games",
+    "canvas-game",
+    "typescript",
+    "remaster"
+  ],
+  "author": "jeiel85",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vite": "^6.2.0"
+  }
+}

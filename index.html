@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>열혈 피구 & 축구 리마스터 (Nekketsu High School Dodgeball & Soccer Remaster)</title>
+  
+  <!-- SEO & Open Graph -->
+  <meta name="description" content="열혈고교 돗지볼부(Super Dodge Ball) 및 축구편 100% 웹 완벽 리마스터. 브라우저에서 바로 즐기는 8-bit 치프튠 사운드와 전설의 마구 액션!" />
+  <meta property="og:title" content="열혈 피구 & 축구 웹 리마스터" />
+  <meta property="og:description" content="원작 100% 이식! 관통 압축 샷, 분신 파도 샷, 워프 샷, 슬라이딩 태클 및 천국 승천 연출까지 웹에서 바로 플레이!" />
+  <meta property="og:type" content="website" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #080811;
+      font-family: 'Courier New', Courier, monospace, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 상단 아케이드 컨트롤 툴바 */
+    #top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 48px;
+      background: linear-gradient(180deg, #1e1e2f 0%, #0e0e18 100%);
+      border-bottom: 2px solid #ffcc00;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .title-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      font-size: 16px;
+      color: #ffeb3b;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px rgba(255, 235, 59, 0.6);
+    }
+
+    .title-badge {
+      background: #ff1744;
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .controls-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-arcade {
+      background: #282a36;
+      color: #f8f8f2;
+      border: 1px solid #6272a4;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: bold;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+
+    .btn-arcade:hover {
+      background: #44475a;
+      border-color: #ffeb3b;
+      transform: translateY(-1px);
+      box-shadow: 0 2px 8px rgba(255, 235, 59, 0.3);
+    }
+
+    .btn-arcade:active {
+      transform: translateY(1px);
+    }
+
+    /* 게임 화면 컨테이너 */
+    #canvas-container {
+      position: relative;
+      margin-top: 48px;
+      width: 100%;
+      height: calc(100% - 48px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #141428 0%, #06060c 100%);
+    }
+
+    #game-canvas {
+      display: block;
+      background: #000;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.25), 0 0 60px rgba(0, 0, 0, 0.8);
+      border: 3px solid #333;
+      border-radius: 8px;
+      max-width: 100%;
+      max-height: 100%;
+      image-rendering: pixelated;
+      image-rendering: -moz-crisp-edges;
+      image-rendering: crisp-edges;
+    }
+
+    @media (max-width: 768px) {
+      .title-logo span:last-child {
+        display: none;
+      }
+      .btn-arcade {
+        padding: 5px 8px;
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 상단 아케이드 툴바 -->
+  <header id="top-bar">
+    <div class="title-logo">
+      <span class="title-badge">REMASTER</span>
+      <span>熱血高校 돗지볼부 & 축구편</span>
+    </div>
+    <div class="controls-group">
+      <button id="btn-home" class="btn-arcade" title="타이틀 메뉴로">🏠 홈</button>
+      <button id="btn-mute" class="btn-arcade" title="사운드 온/오프">🔊 음소거</button>
+      <button id="btn-crt" class="btn-arcade" title="레트로 CRT 효과 토글">📺 CRT: ON</button>
+      <button id="btn-pad" class="btn-arcade" title="모바일 가상패드 토글">🎮 조이패드</button>
+      <button id="btn-fullscreen" class="btn-arcade" title="전체화면">⛶ 전체화면</button>
+    </div>
+  </header>
+
+  <!-- 메인 게임 뷰포트 -->
+  <main id="canvas-container">
+    <canvas id="game-canvas"></canvas>
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>
