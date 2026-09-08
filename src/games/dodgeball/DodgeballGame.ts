@@ -56,6 +56,7 @@ export class DodgeballGame {
 
   public startTournament(startStageIndex: number = 0, difficulty: 'easy' | 'normal' | 'hard' = 'normal') {
     this.mode = 'tournament';
+    input.is2PlayerMode = false;
     this.currentStageIndex = startStageIndex;
     const stageKey = this.stageOrder[this.currentStageIndex];
 
@@ -70,6 +71,7 @@ export class DodgeballGame {
 
   public startVersus(leftTeamKey: string, rightTeamKey: string, stageKey: string) {
     this.mode = 'versus';
+    input.is2PlayerMode = true; // 2P 대전 모드 활성화!
     this.teamLeft = TEAMS_DATA[leftTeamKey] || TEAMS_DATA.japan_nekketsu;
     this.teamRight = TEAMS_DATA[rightTeamKey] || TEAMS_DATA.japan_hanazono;
 
@@ -81,6 +83,7 @@ export class DodgeballGame {
 
   public startPractice() {
     this.mode = 'practice';
+    input.is2PlayerMode = false;
     this.teamLeft = TEAMS_DATA.japan_nekketsu;
     this.teamRight = TEAMS_DATA.usa;
 
@@ -206,25 +209,36 @@ export class DodgeballGame {
     const activeInfielders = teamPlayers.filter(p => p.stats.position.startsWith('infield') && !p.isDead);
     if (activeInfielders.length === 0) return;
 
+    // 현재 제어 대상 선수 확인
+    let curIndex = (teamSide === 'left') ? this.controlledLeftIndex : this.controlledRightIndex;
+    let controlled = teamPlayers[curIndex];
+
+    // 만약 현재 제어 선수가 사망했거나 비활성이면 살아있는 첫 번째 내야수로 변경
+    if (!controlled || controlled.isDead || !controlled.stats.position.startsWith('infield')) {
+      controlled = activeInfielders[0];
+      curIndex = teamPlayers.indexOf(controlled);
+    }
+
     // 공을 가진 선수가 있으면 그 선수로 자동 제어 전환
     const ballHolder = teamPlayers.find(p => p.hasBall && !p.isDead);
-    let controlled: Player;
-
     if (ballHolder) {
       controlled = ballHolder;
+      curIndex = teamPlayers.indexOf(controlled);
     } else {
-      // 공에 가장 가까운 내야수를 제어
-      controlled = activeInfielders.reduce((prev, curr) => {
-        const dPrev = Math.hypot(prev.x - this.ball.x, prev.y - this.ball.y);
-        const dCurr = Math.hypot(curr.x - this.ball.x, curr.y - this.ball.y);
-        return dCurr < dPrev ? curr : prev;
-      });
+      // 수비 중 선수 수동 변경 (SWITCH 키: Tab, Q, E)
+      if (input.isActionJustPressed('SWITCH', playerNum)) {
+        const curInfieldIdx = activeInfielders.indexOf(controlled);
+        const nextInfieldIdx = (curInfieldIdx + 1) % activeInfielders.length;
+        controlled = activeInfielders[nextInfieldIdx];
+        curIndex = teamPlayers.indexOf(controlled);
+        sound.playSelect();
+      }
     }
 
     if (teamSide === 'left') {
-      this.controlledLeftIndex = teamPlayers.indexOf(controlled);
+      this.controlledLeftIndex = curIndex;
     } else {
-      this.controlledRightIndex = teamPlayers.indexOf(controlled);
+      this.controlledRightIndex = curIndex;
     }
 
     // 방향 이동

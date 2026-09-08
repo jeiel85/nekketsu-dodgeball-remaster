@@ -72,7 +72,7 @@ export class HUD {
     ctx.font = '12px monospace';
     ctx.fillStyle = '#ffffff';
     ctx.textAlign = 'center';
-    ctx.fillText('1P 조작: [WASD] 이동 | [K] 슛/마구 | [J] 패스/캐치 | [SPACE] 대시 | [SHIFT] 점프', 400, 470);
+    ctx.fillText('1P: [방향키 / WASD] 이동 | [K] 슛/마구 | [J] 패스/캐치 | [SPACE] 대시 | [SHIFT] 점프 | [TAB] 선수전환', 400, 470);
 
     ctx.restore();
   }
