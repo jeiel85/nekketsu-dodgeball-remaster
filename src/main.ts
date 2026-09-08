@@ -42,6 +42,15 @@ class App {
   }
 
   private setupUIControls() {
+    // 화면 비율 토글
+    document.getElementById('btn-aspect')?.addEventListener('click', () => {
+      const mode = this.renderer.cycleAspectRatio();
+      const btn = document.getElementById('btn-aspect');
+      if (btn) {
+        btn.innerText = mode === '4:3' ? '📐 비율: 4:3' : mode === '16:9' ? '📐 비율: 16:9' : '📐 비율: 맞춤';
+      }
+    });
+
     // 사운드 토글
     document.getElementById('btn-mute')?.addEventListener('click', () => {
       const isMuted = sound.toggleMute();
@@ -76,6 +85,7 @@ class App {
     this.menu.screen = 'TITLE';
     this.dodgeballGame = null;
     this.soccerGame = null;
+    input.is2PlayerMode = false;
     sound.playBgm('title');
   }
 

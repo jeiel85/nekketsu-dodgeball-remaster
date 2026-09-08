@@ -58,6 +58,7 @@ export class SoccerGame {
   public screenShake: number = 0;
 
   constructor() {
+    input.is2PlayerMode = false;
     this.initPlayers();
     sound.playBgm('soccer');
   }

@@ -186,7 +186,7 @@ export class MenuSystem {
     ctx.fillStyle = '#78909c';
     ctx.font = '13px monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('방향키 [W / S] 메뉴 이동  |  [K / SPACE] 결정', 400, 460);
+    ctx.fillText('메뉴 이동: [▲ / ▼] 또는 [W / S]  |  결정: [K / SPACE / ENTER]', 400, 460);
   }
 
   private drawTeamSelect(ctx: CanvasRenderingContext2D) {
@@ -312,14 +312,15 @@ export class MenuSystem {
 
     const lines = [
       '1. 기본 조작:',
-      '   - 이동: [W, A, S, D] 또는 방향키 더블탭으로 대시!',
-      '   - 슛 / 공격: [K] 키',
-      '   - 패스 / 캐치 / 웅크리기: [J] 키',
-      '   - 점프: [SHIFT] 또는 [J + K] 동시 누름',
+      '   - 이동: [방향키 ▲▼◀▶] 또는 [W, A, S, D] (연속 2번 탭하면 대시 질주!)',
+      '   - 슛 / 공격: [K] 키 (또는 X, Z)',
+      '   - 패스 / 캐치: [J] 키 (또는 C, Enter)',
+      '   - 점프: [SHIFT] 키 (또는 V, J+K 동시 누름)',
       '   - 대시 전력질주: [SPACE] 키',
+      '   - 수비 시 선수전환: [TAB] 또는 [Q] 키 (원하는 내야수 선택)',
       '',
       '2. 전설의 마구 (슈퍼 샷) 발동 비기:',
-      '   - 【지상 마구】: [SPACE] 대시 질주 중 3~4번째 걸음 타이밍에 [K] 슛!',
+      '   - 【지상 마구】: [SPACE] 대시 질주 중 2~3번째 걸음 타이밍에 [K] 슛!',
       '   - 【공중 점프 마구】: 대시 점프 후 정점(최고점) 타이밍에 [K] 슛!',
       '   - 캐릭터마다 궤적과 능력이 완전히 다른 8종의 마구가 발동합니다.',
       '',

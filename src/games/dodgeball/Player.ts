@@ -242,7 +242,7 @@ export class Player {
     }
 
     if (this.isDashing) {
-      currentSpeed *= 1.75; // 대시 속도 대폭 증가!
+      currentSpeed *= 1.8; // 대시 속도 대폭 증가!
     }
 
     if (dx !== 0 && dy !== 0) {
@@ -251,9 +251,17 @@ export class Player {
     }
 
     // 가속도 적용 (아이슬란드 빙판 등 마찰력에 따라 부드러운 가속)
-    const accel = this.court.stage.friction > 0.95 ? 0.35 : 0.8;
-    this.vx += (dx * currentSpeed - this.vx) * accel;
-    this.vy += (dy * currentSpeed - this.vy) * accel;
+    if (dx !== 0 || dy !== 0) {
+      const accel = this.court.stage.friction > 0.95 ? 0.35 : 0.85;
+      this.vx += (dx * currentSpeed - this.vx) * accel;
+      this.vy += (dy * currentSpeed - this.vy) * accel;
+    } else {
+      // 키를 뗐을 때 즉시 감속 (빙판이 아닐 때)
+      if (this.court.stage.friction <= 0.95) {
+        this.vx *= 0.65;
+        this.vy *= 0.65;
+      }
+    }
   }
 
   // 점프
@@ -273,8 +281,8 @@ export class Player {
 
     this.hasBall = false;
     const isJumpShot = this.isJumping;
-    const isGroundSuper = this.isDashing && this.dashSteps >= 3.0;
-    const shouldSuper = forceSuper || isGroundSuper || (isJumpShot && this.z > 20);
+    const isGroundSuper = this.isDashing && this.dashSteps >= 1.6;
+    const shouldSuper = forceSuper || isGroundSuper || (isJumpShot && this.z > 16);
 
     this.animState = isJumpShot ? 'JUMP_THROW' : 'THROW_WINDUP';
     this.stateTimer = 10;

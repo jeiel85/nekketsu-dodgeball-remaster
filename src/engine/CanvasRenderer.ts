@@ -1,4 +1,6 @@
-// 픽셀 캔버스 렌더러, CRT 모니터 스캔라인 및 반응형 스케일러
+// 픽셀 캔버스 렌더러: 4:3 레트로 / 16:9 와이드 비율 지원, 상단바 보정 정밀 스케일러
+
+export type AspectRatioMode = '4:3' | '16:9' | 'fit';
 
 export class CanvasRenderer {
   public canvas: HTMLCanvasElement;
@@ -8,6 +10,8 @@ export class CanvasRenderer {
   public readonly logicalHeight: number = 480;
 
   public enableCRT: boolean = true;
+  public aspectMode: AspectRatioMode = '4:3'; // 기본 원작 레트로 4:3 비율
+
   private scanlineCanvas: HTMLCanvasElement | null = null;
 
   constructor(canvas: HTMLCanvasElement) {
@@ -19,6 +23,9 @@ export class CanvasRenderer {
     this.initCanvasSize();
     this.createScanlinePattern();
     window.addEventListener('resize', () => this.onResize());
+
+    // 초기화 즉시 리사이즈 호출로 캔버스 스케일 완벽 적용!
+    setTimeout(() => this.onResize(), 0);
   }
 
   private initCanvasSize() {
@@ -51,17 +58,47 @@ export class CanvasRenderer {
     sCtx.fillRect(0, 0, this.logicalWidth, this.logicalHeight);
   }
 
-  private onResize() {
-    // 종횡비 16:9 유지하면서 브라우저 창에 꽉 차게 스케일
+  public onResize() {
+    // 상단 아케이드 툴바 48px 제외한 순수 게임 뷰포트 영역 계산
     const containerW = window.innerWidth;
-    const containerH = window.innerHeight;
+    const containerH = Math.max(200, window.innerHeight - 48);
 
-    const scale = Math.min(containerW / this.logicalWidth, containerH / this.logicalHeight);
-    const renderW = Math.floor(this.logicalWidth * scale);
-    const renderH = Math.floor(this.logicalHeight * scale);
+    let targetRatio: number;
+    if (this.aspectMode === '4:3') {
+      targetRatio = 4 / 3; // 1.333 (원작 레트로 패미컴/아케이드 비율)
+    } else if (this.aspectMode === '16:9') {
+      targetRatio = 16 / 9; // 1.777 (와이드스크린 비율)
+    } else {
+      targetRatio = this.logicalWidth / this.logicalHeight; // 기본 800:480 (5:3)
+    }
 
-    this.canvas.style.width = `${renderW}px`;
-    this.canvas.style.height = `${renderH}px`;
+    let renderW: number;
+    let renderH: number;
+
+    if (containerW / containerH > targetRatio) {
+      // 세로 높이에 맞춤
+      renderH = containerH - 16; // 16px 패딩
+      renderW = renderH * targetRatio;
+    } else {
+      // 가로 너비에 맞춤
+      renderW = containerW - 16;
+      renderH = renderW / targetRatio;
+    }
+
+    this.canvas.style.width = `${Math.floor(renderW)}px`;
+    this.canvas.style.height = `${Math.floor(renderH)}px`;
+  }
+
+  public cycleAspectRatio(): AspectRatioMode {
+    if (this.aspectMode === '4:3') {
+      this.aspectMode = '16:9';
+    } else if (this.aspectMode === '16:9') {
+      this.aspectMode = 'fit';
+    } else {
+      this.aspectMode = '4:3';
+    }
+    this.onResize();
+    return this.aspectMode;
   }
 
   public clear() {
